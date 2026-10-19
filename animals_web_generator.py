@@ -21,34 +21,29 @@ def write_html(file_path, content):
 
 
 def serialize_animal(animal_obj):
-    """Convert one animal dictionary into an HTML card."""
     name = html.escape(animal_obj.get("name", "Unknown"))
     characteristics = animal_obj.get("characteristics", {})
     locations = animal_obj.get("locations", [])
 
     output = '<li class="cards__item">\n'
     output += f'  <div class="card__title">{name}</div>\n'
-    output += '  <p class="card__text">\n'
+    output += '  <div class="card__text">\n'
+    output += '    <ul class="animal-details">\n'
 
     if "diet" in characteristics:
-        output += f'    <strong>Diet:</strong> {html.escape(characteristics["diet"])}<br/>\n'
+        output += f'      <li class="animal-details__item"><strong>Diet:</strong> {html.escape(characteristics["diet"])}</li>\n'
 
     if locations:
-        output += f'    <strong>Location:</strong> {html.escape(locations[0])}<br/>\n'
+        output += f'      <li class="animal-details__item"><strong>Location:</strong> {html.escape(locations[0])}</li>\n'
 
     if "type" in characteristics:
-        output += f'    <strong>Type:</strong> {html.escape(characteristics["type"])}<br/>\n'
+        output += f'      <li class="animal-details__item"><strong>Type:</strong> {html.escape(characteristics["type"])}</li>\n'
 
     if "skin_type" in characteristics:
-        output += f'    <strong>Skin type:</strong> {html.escape(characteristics["skin_type"])}<br/>\n'
+        output += f'      <li class="animal-details__item"><strong>Skin type:</strong> {html.escape(characteristics["skin_type"])}</li>\n'
 
-    if "lifespan" in characteristics:
-        output += f'    <strong>Lifespan:</strong> {html.escape(characteristics["lifespan"])}<br/>\n'
-
-    if "top_speed" in characteristics:
-        output += f'    <strong>Top speed:</strong> {html.escape(characteristics["top_speed"])}<br/>\n'
-
-    output += '  </p>\n'
+    output += '    </ul>\n'
+    output += '  </div>\n'
     output += '</li>\n'
     return output
 
