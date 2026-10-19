@@ -19,28 +19,42 @@ def write_html(file_path, content):
         handle.write(content)
 
 
-animals_data = load_data("animals_data.json")
-template = read_template("animals_template.html")
+def serialize_animal(animal_obj):
+    """Convert one animal dictionary into an HTML card."""
+    output = '<li class="cards__item">\n'
+    output += f'  <div class="card__title">{animal_obj["name"]}</div>\n'
+    output += '  <p class="card__text">\n'
 
-output = ""
+    characteristics = animal_obj["characteristics"]
 
-for animal_data in animals_data:
-    output += '<li class="cards__item">\n'
+    if "diet" in characteristics:
+        output += f'    <strong>Diet:</strong> {characteristics["diet"]}<br/>\n'
 
-    if "name" in animal_data:
-        output += f'Name: {animal_data["name"]}<br/>\n'
+    if "locations" in animal_obj and animal_obj["locations"]:
+        output += f'    <strong>Location:</strong> {animal_obj["locations"][0]}<br/>\n'
 
-    if "diet" in animal_data["characteristics"]:
-        output += f'Diet: {animal_data["characteristics"]["diet"]}<br/>\n'
+    if "type" in characteristics:
+        output += f'    <strong>Type:</strong> {characteristics["type"]}<br/>\n'
 
-    if "locations" in animal_data and animal_data["locations"]:
-        output += f'Location: {animal_data["locations"][0]}<br/>\n'
-
-    if "type" in animal_data["characteristics"]:
-        output += f'Type: {animal_data["characteristics"]["type"]}<br/>\n'
-
+    output += "  </p>\n"
     output += "</li>\n"
 
-final_html = template.replace("__REPLACE_ANIMALS_INFO__", output)
+    return output
 
-write_html("animals.html", final_html)
+
+def main():
+    animals_data = load_data("animals_data.json")
+    template = read_template("animals_template.html")
+
+    output = ""
+
+    for animal_data in animals_data:
+        output += serialize_animal(animal_data)
+
+    final_html = template.replace("__REPLACE_ANIMALS_INFO__", output)
+
+    write_html("animals.html", final_html)
+
+
+if __name__ == "__main__":
+    main()
